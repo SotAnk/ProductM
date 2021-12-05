@@ -10,93 +10,62 @@ import ru.netology.repository.ProductRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductManagerTest {
-
-    private ProductRepository repository = new ProductRepository();
+    ProductRepository repository = new ProductRepository();
     ProductManager manager = new ProductManager(repository);
-
-    Product first = new Smartphone(1, "Lg-g6", 25000, "LG");
-    Product second = new Smartphone(2, "Liquid Z6", 10000, "Acer");
-    Product third = new Smartphone(3, "Honor 9A", 13100, "Huawei");
-    Product fourth = new Smartphone(4, "P40 Pro", 54587, "Huawei");
-    Product fifth = new Book(5, "Повезло", 350, "Мэй Маск");
-    Product sixth = new Book(6, "Правила жизни", 350, "Мэй Маск");
-    Product seventh = new Book(7, "Снегурочка", 350, "Александр Островский");
+    Product book1 = new Book(1, "book1", 1000, "автор1");
+    Product book2 = new Book(2, "book2", 2000, "автор2");
+    Product smartphone1 = new Smartphone(11, "iPhone", 5000, "USA");
+    Product smartphone2 = new Smartphone(22, "Honor", 2000, "China");
 
     @BeforeEach
     public void setUp() {
-        manager.addProduct(first);
-        manager.addProduct(second);
-        manager.addProduct(third);
-        manager.addProduct(fourth);
-        manager.addProduct(fifth);
-        manager.addProduct(sixth);
-        manager.addProduct(seventh);
+        manager.add(book1);
+        manager.add(book2);
+        manager.add(smartphone1);
+        manager.add(smartphone2);
     }
 
     @Test
-    public void shouldSearchByBookName() {
-
-        String search = "Правила жизни";
-
-        Product[] actual = manager.searchBy(search);
-        Product[] expected = new Product[]{sixth};
-
+    public void shouldSearchByNameBook() {
+        Product[] expected = {book2};
+        Product[] actual = manager.searchBy("book2");
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldSearchAuthor() {
-
-        String search = "Александр Островский";
-
-        Product[] actual = manager.searchBy(search);
-        Product[] expected = new Product[]{seventh};
-
+    public void shouldSearchByAuthor() {
+        Product[] expected = {book1};
+        Product[] actual = manager.searchBy("автор1");
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldSearchTheSameAuthor() {
-
-        String search = "Мэй Маск";
-
-        Product[] actual = manager.searchBy(search);
-        Product[] expected = new Product[]{fifth, sixth};
-
+    public void shouldNotFindAuthor() {
+        Product[] expected = {};
+        Product[] actual = manager.searchBy("автор3");
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldSearchByPhoneName() {
-
-        String search = "Honor 9A";
-
-        Product[] actual = manager.searchBy(search);
-        Product[] expected = new Product[]{third};
-
+    public void shouldSearchByNameSmartphone() {
+        Product[] expected = {smartphone2};
+        Product[] actual = manager.searchBy("Honor");
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldSearchTheSameMaker() {
-
-        String search = "Huawei";
-
-        Product[] actual = manager.searchBy(search);
-        Product[] expected = new Product[]{third, fourth};
-
+    public void shouldSearchByManufacture() {
+        Product[] expected = {smartphone1};
+        Product[] actual = manager.searchBy("USA");
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldSearchMaker() {
-
-        String search = "LG";
-
-        Product[] actual = manager.searchBy(search);
-        Product[] expected = new Product[]{first};
-
+    public void shouldNotFindManufacture() {
+        Product[] expected = {};
+        Product[] actual = manager.searchBy("Canada");
         assertArrayEquals(expected, actual);
-
     }
+
 }
+
